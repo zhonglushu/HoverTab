@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">HoverTab</string>
+    <string name="network_error">网络出错，请检查您的网络状况</string>
+</resources>

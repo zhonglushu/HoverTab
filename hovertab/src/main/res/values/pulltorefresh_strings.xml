@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="triangel_pull_to_refresh_pull_label" translatable="false">下拉刷新…</string>
+    <string name="triangel_pull_to_refresh_release_label" translatable="false">释放刷新…</string>
+    <string name="triangel_pull_to_refresh_refreshing_label" translatable="false">正在加载…</string>
+
+    <!-- Just use standard Pull Down String when pulling up. These can be set for languages which require it -->
+    <string name="triangel_pull_to_refresh_from_bottom_pull_label" translatable="false">上拉刷新…</string>
+    <string name="triangel_pull_to_refresh_from_bottom_release_label" translatable="false">@string/triangel_pull_to_refresh_release_label</string>
+    <string name="triangel_pull_to_refresh_from_bottom_refreshing_label" translatable="false">@string/triangel_pull_to_refresh_refreshing_label</string>
+
+    <string name="pull_to_refresh_has_finish" translatable="false">刷新完成</string>
+    <string name="pull_to_refresh_no_more" translatable="false">没有更多了</string>
+</resources>

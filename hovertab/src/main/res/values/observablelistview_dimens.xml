@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="observable_header_footer_left_right_padding">10dp</dimen>
+    <dimen name="observable_header_footer_top_bottom_padding">10dp</dimen>
+    <dimen name="person_info_activity_flexible_space_height">100dp</dimen>
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- common fontsize -->
+    <dimen name="common_fontsize_h1_big_title">18sp</dimen>
+    <dimen name="common_fontsize_h2_big_title">17sp</dimen>
+    <dimen name="common_fontsize_h3_small_title">16sp</dimen>
+    <dimen name="common_fontsize_h4_content">14sp</dimen>
+    <dimen name="common_fontsize_h3_small_title_1080p">15sp</dimen>
+    <dimen name="common_fontsize_h5_small_content">12sp</dimen>
+    <dimen name="common_fontsize_h6_sub_content">14sp</dimen>
+    <dimen name="common_fontsize_h7_small_sub_content">10sp</dimen>
+    
+    <dimen name="common_fontsize_h16_small_sub_content">8sp</dimen>
+    
+    <dimen name="common_fontsize_h8_content">21sp</dimen>
+    <dimen name="common_fontsize_h11_small_content">11sp</dimen>
+    
+    <dimen name="common_fontsize_number_big">20sp</dimen>
+    <dimen name="common_fontsize_number_small">13sp</dimen>
+    <!-- end common -->
+    
+    <dimen name="triangel_actionbar_title_textsize">28sp</dimen>
+    <dimen name="wish_detail_apply_button_textsize">19sp</dimen>
+</resources>

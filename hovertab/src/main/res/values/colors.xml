@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- common fontcolor -->
+    <color name="common_fontcolor_h1_big_title">#2b2b2b</color>
+    <color name="common_fontcolor_h2_big_title">#2b2b2b</color>
+    <color name="common_fontcolor_h3_small_title">#505050</color>
+    <color name="common_fontcolor_h4_content">#585858</color>
+    <color name="common_fontcolor_h4_sub_content">#999999</color>
+    <color name="common_fontcolor_h5_small_content">#2b2b2b</color>
+    <color name="common_fontcolor_h6_sub_content">#b4b4b4</color>
+    <color name="common_fontcolor_h7_small_sub_content">#b8c7d1</color>
+    
+    <color name="common_fontcolor_h8_content">#503213</color>
+    <color name="common_fontcolor_h9_small_content">#a3a3a2</color>
+    <color name="common_fontcolor_h10_content">#747474</color>
+</resources>

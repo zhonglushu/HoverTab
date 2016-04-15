@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ObservableRefreshView">
+        <attr name="customRefreshStyle">
+            <flag name="header" value="0x0" />
+            <flag name="footer" value="0x1" />
+        </attr>
+    </declare-styleable>
+</resources>
