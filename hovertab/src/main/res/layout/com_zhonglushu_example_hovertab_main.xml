@@ -11,7 +11,6 @@
         android:id="@+id/com_zhonglushu_example_hovertab_refresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#00ffff"
         app:customRefreshStyle="header"/>
 
     <FrameLayout
@@ -30,7 +29,6 @@
             android:id="@+id/com_zhonglushu_example_hovertab_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ff00ff"
             android:orientation="vertical"
             android:visibility="visible">
 
