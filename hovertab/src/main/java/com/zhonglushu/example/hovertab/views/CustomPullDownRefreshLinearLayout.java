@@ -24,7 +24,7 @@ import com.zhonglushu.example.hovertab.R;
 import com.zhonglushu.example.hovertab.observable.ScrollUtils;
 
 /**
- * Created by huangyq on 2015/10/29.
+ * Created by zhonglushu on 2015/10/29.
  * 实现下拉刷新的类
  */
 public class CustomPullDownRefreshLinearLayout extends LinearLayout{
@@ -131,7 +131,7 @@ public class CustomPullDownRefreshLinearLayout extends LinearLayout{
                     oppositeDiff = x - mLastMotionX;
                     absDiff = Math.abs(diff);
                     if (absDiff > mTouchSlop && absDiff > Math.abs(oppositeDiff)) {
-                        //Log.i("huangyiquan", "diff = " + diff + ", activity.isReadyForPullStart() = " + activity.isReadyForPullStart() + ", isShowHeaderRefreshView() = " + isShowHeaderRefreshView());
+                        //Log.i("zhonglushu", "diff = " + diff + ", activity.isReadyForPullStart() = " + activity.isReadyForPullStart() + ", isShowHeaderRefreshView() = " + isShowHeaderRefreshView());
                         if ((diff >= 1f && activity.isReadyForPullStart())||(isShowHeaderRefreshView() && diff < -1f)) {
                             mLastMotionY = y;
                             mLastMotionX = x;
@@ -145,7 +145,7 @@ public class CustomPullDownRefreshLinearLayout extends LinearLayout{
                 if (activity.isReadyForPullStart()||isShowHeaderRefreshView()) {
                     mLastMotionY = mInitialMotionY = event.getY();
                     mLastMotionX = mInitialMotionX = event.getX();
-                    Log.i("huangyiquan", "onInterceptTouchEvent MotionEvent.ACTION_DOWN mInitialMotionY = " + mInitialMotionY + ", mLastMotionY = " + mLastMotionY);
+                    Log.i("zhonglushu", "onInterceptTouchEvent MotionEvent.ACTION_DOWN mInitialMotionY = " + mInitialMotionY + ", mLastMotionY = " + mLastMotionY);
                     mIsBeingDragged = false;
                     mIntercept = false;
                     mDownScrollY = this.getScrollY();
@@ -165,9 +165,9 @@ public class CustomPullDownRefreshLinearLayout extends LinearLayout{
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_MOVE: {
-                //Log.i("huangyiquan", "event.getY() = " + event.getY());
+                //Log.i("zhonglushu", "event.getY() = " + event.getY());
                 if (mIsBeingDragged) {
-                    //Log.i("huangyiquan", "mIntercept = " + mIntercept + ", activity.isReadyForPullStart() = " + activity.isReadyForPullStart() + ", sthis.getScrollY() = " + this.getScrollY());
+                    //Log.i("zhonglushu", "mIntercept = " + mIntercept + ", activity.isReadyForPullStart() = " + activity.isReadyForPullStart() + ", sthis.getScrollY() = " + this.getScrollY());
                     if(!mIntercept && activity.isReadyForPullStart() && Math.abs(this.getScrollY()) < 10 && isShowHeaderRefreshView()){
                         float y = event.getY();
                         float diff = y - mLastMotionY;
@@ -208,7 +208,7 @@ public class CustomPullDownRefreshLinearLayout extends LinearLayout{
 
             case MotionEvent.ACTION_DOWN: {
                 if (activity.isReadyForPullStart()||isShowHeaderRefreshView()) {
-                    Log.i("huangyiquan", "onTouchEvent MotionEvent.ACTION_DOWN mInitialMotionY = " + mInitialMotionY + ", mLastMotionY = " + mLastMotionY);
+                    Log.i("zhonglushu", "onTouchEvent MotionEvent.ACTION_DOWN mInitialMotionY = " + mInitialMotionY + ", mLastMotionY = " + mLastMotionY);
                     mLastMotionY = mInitialMotionY = event.getY();
                     mLastMotionX = mInitialMotionX = event.getX();
                     mDownScrollY = this.getScrollY();
@@ -219,7 +219,7 @@ public class CustomPullDownRefreshLinearLayout extends LinearLayout{
 
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP: {
-                //Log.i("huangyiquan", "MotionEvent.ACTION_UP");
+                //Log.i("zhonglushu", "MotionEvent.ACTION_UP");
                 mIntercept = false;
                 mDownScrollY = 0.0f;
                 mInitialMotionY = 0.0f;
@@ -320,14 +320,14 @@ public class CustomPullDownRefreshLinearLayout extends LinearLayout{
 
         initialMotionValue = mInitialMotionY;
         lastMotionValue = mLastMotionY;
-        //Log.i("huangyiquan", "pullEvent() mLastMotionY = " + mLastMotionY);
+        //Log.i("zhonglushu", "pullEvent() mLastMotionY = " + mLastMotionY);
         float deltaY = initialMotionValue - lastMotionValue;
         /*if(isRefreshing() && deltaY > 1.0f){
             newScrollValue = Math.min(0, Math.round(mDownScrollY + deltaY / FRICTION));
         }else{
             newScrollValue = Math.round(Math.min(deltaY, 0) / FRICTION);
         }*/
-        Log.i("huangyiquan", "initialMotionValue = " + initialMotionValue + ", lastMotionValue = " + lastMotionValue + ", mDownScrollY = " + mDownScrollY);
+        Log.i("zhonglushu", "initialMotionValue = " + initialMotionValue + ", lastMotionValue = " + lastMotionValue + ", mDownScrollY = " + mDownScrollY);
         newScrollValue = Math.round(mDownScrollY + deltaY / FRICTION);//Math.min(0, );
         itemDimension = getRefreshFooterHeight();
 

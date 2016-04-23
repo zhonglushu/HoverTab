@@ -14,7 +14,7 @@ import com.nineoldandroids.animation.ObjectAnimator;
 import com.zhonglushu.example.hovertab.R;
 
 /**
- * Created by huangyq on 2015/10/15.
+ * Created by zhonglushu on 2015/10/15.
  * ObservableListView的footer和header
  */
 public class ObservableRefreshView extends FrameLayout {

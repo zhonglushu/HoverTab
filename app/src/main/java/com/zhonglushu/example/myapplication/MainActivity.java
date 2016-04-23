@@ -3,6 +3,7 @@ package com.zhonglushu.example.myapplication;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -13,6 +14,7 @@ public class MainActivity extends HoverTabActivity {
 
     private View tab1;
     private View tab2;
+    private View tab3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,17 +24,47 @@ public class MainActivity extends HoverTabActivity {
         View tabview = inflater.inflate(R.layout.tab_layout, null);
         tab1 = tabview.findViewById(R.id.tab1);
         tab2 = tabview.findViewById(R.id.tab2);
+        tab3 = tabview.findViewById(R.id.tab3);
         tab1.setOnClickListener(mListener);
         tab2.setOnClickListener(mListener);
+        tab3.setOnClickListener(mListener);
         tab1.setSelected(true);
         setHoverTabView(tabview);
 
         setmPagerAdapter(new LocalPagerAdapter(this.getSupportFragmentManager()));
 
+        //header必须要在pageradapter设置之后，跟实现原理有关系
         View view = inflater.inflate(R.layout.header_layout, null);
         setHoverHeaderView(view);
+        setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-        //invalidateHeaderView();
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position == 0){
+                    tab1.setSelected(true);
+                    tab2.setSelected(false);
+                    tab3.setSelected(false);
+                }else if(position == 1){
+                    tab1.setSelected(false);
+                    tab2.setSelected(true);
+                    tab3.setSelected(false);
+                }
+                else if(position == 2){
+                    tab1.setSelected(false);
+                    tab2.setSelected(false);
+                    tab3.setSelected(true);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private View.OnClickListener mListener = new View.OnClickListener(){
@@ -46,30 +78,12 @@ public class MainActivity extends HoverTabActivity {
                 case R.id.tab2:
                     setViewPagerCurrentItem(1);
                     break;
+                case R.id.tab3:
+                    setViewPagerCurrentItem(2);
+                    break;
             }
         }
     };
-
-    @Override
-    public void onHoverPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-    }
-
-    @Override
-    public void onHoverPageSelected(int position) {
-        if(position == 0){
-            tab1.setSelected(true);
-            tab2.setSelected(false);
-        }else if(position == 1){
-            tab1.setSelected(false);
-            tab2.setSelected(true);
-        }
-    }
-
-    @Override
-    public void onHoverPageScrollStateChanged(int state) {
-
-    }
 
     private class LocalPagerAdapter extends HoverTabFragmentStatePagerAdapter{
 
@@ -79,13 +93,15 @@ public class MainActivity extends HoverTabActivity {
 
         @Override
         public int getTabCount() {
-            return 2;
+            return 3;
         }
 
         @Override
         public ObservableBaseFragment createTab(int position) {
             ObservableBaseFragment f;
             if(position == 0){
+                f = new Test1Fragment();
+            }else if(position == 1){
                 f = new Test1Fragment();
             }else{
                 f = new Test2Fragment();

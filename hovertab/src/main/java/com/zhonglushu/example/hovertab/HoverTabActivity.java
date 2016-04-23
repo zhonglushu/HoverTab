@@ -17,14 +17,20 @@ import com.zhonglushu.example.hovertab.views.CustomPullDownRefreshLinearLayout;
 import com.zhonglushu.example.hovertab.views.ObservableListView;
 
 /**
- * Created by huangyq on 2016/4/11.
+ * Created by zhonglushu on 2016/4/11.
  */
-public abstract class HoverTabActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener{
+public abstract class HoverTabActivity extends AppCompatActivity{
 
     private CustomPullDownRefreshLinearLayout customPullDownRefreshLinearLayout = null;
     private HoverTabFragmentStatePagerAdapter mPagerAdapter;
     private ViewPager mPager;
     private ViewPager.OnPageChangeListener mOnPageChangeListener= null;
+
+    public void setOnPageChangeListener(ViewPager.OnPageChangeListener mOnPageChangeListener) {
+        this.mOnPageChangeListener = mOnPageChangeListener;
+        if(mPager != null)
+            mPager.setOnPageChangeListener(mOnPageChangeListener);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +52,6 @@ public abstract class HoverTabActivity extends AppCompatActivity implements View
         });
 
         mPager = (ViewPager) findViewById(R.id.com_zhonglushu_example_hovertab_pager);
-        mPager.setOnPageChangeListener(this);
     }
 
     public void setmPagerAdapter(HoverTabFragmentStatePagerAdapter mPagerAdapter) {
@@ -73,45 +78,14 @@ public abstract class HoverTabActivity extends AppCompatActivity implements View
         }
     }
 
-    //设置listview的headerview的高度
-    /*public void invalidateHeaderView(){
-        ScrollUtils.addOnGlobalLayoutListener(mPager, new Runnable() {
-
-            @Override
-            public void run() {
-                for (int i = 0; i < mPagerAdapter.getCount(); i++) {
-                    // Skip destroyed or not created item
-                    ObservableListFragment f =
-                            (ObservableListFragment) mPagerAdapter.getItemAt(i);
-                    if (f == null) {
-                        continue;
-                    }
-
-                    View view = f.getView();
-                    if (view == null) {
-                        continue;
-                    }
-                    f.setHeaderView(customPullDownRefreshLinearLayout.getmHeadHeight());
-                }
-            }
-        });
-    }*/
-
     public boolean isReadyForPullStart(){
-        ObservableListView list = getCurrentListView();
-        if(list != null)
-            return list.isFirstItemVisible();
+        Scrollable sl = getCurrentScrollableView();
+        if(sl != null)
+            return sl.isReadyForPullStart();
         return false;
     }
 
-    public int getFirstVisiblePosition(){
-        ObservableListView list = getCurrentListView();
-        if(list != null)
-            return getCurrentListView().getFirstVisiblePosition();
-        return -1;
-    }
-
-    public ObservableListView getCurrentListView(){
+    public Scrollable getCurrentScrollableView(){
         ObservableBaseFragment fragment =
                 (ObservableBaseFragment) mPagerAdapter.getItemAt(mPager.getCurrentItem());
         if (fragment == null) {
@@ -121,7 +95,7 @@ public abstract class HoverTabActivity extends AppCompatActivity implements View
         if (view == null) {
             return null;
         }
-        return (ObservableListView) view.findViewById(R.id.scroll);
+        return (Scrollable) view.findViewById(R.id.scroll);
     }
 
     /**
@@ -183,25 +157,6 @@ public abstract class HoverTabActivity extends AppCompatActivity implements View
             //f.updateFlexibleSpace(scrollY);
         }
     }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        onHoverPageScrolled(position, positionOffset, positionOffsetPixels);
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        onHoverPageSelected(position);
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-        onHoverPageScrollStateChanged(state);
-    }
-
-    public abstract void onHoverPageScrolled(int position, float positionOffset, int positionOffsetPixels);
-    public abstract void onHoverPageSelected(int position);
-    public abstract void onHoverPageScrollStateChanged(int state);
 
     public abstract class HoverTabFragmentStatePagerAdapter extends CacheFragmentStatePagerAdapter {
 

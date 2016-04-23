@@ -3,18 +3,26 @@ package com.zhonglushu.example.myapplication;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.widget.ArrayAdapter;
-import com.zhonglushu.example.hovertab.fragment.ObservableListFragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.zhonglushu.example.hovertab.fragment.ObservableRecyclerViewFragment;
+import com.zhonglushu.example.hovertab.views.ObservableRecyclerView;
+
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by huangyq on 2016/4/11.
  */
-public class Test2Fragment extends ObservableListFragment {
+public class Test2Fragment extends ObservableRecyclerViewFragment {
 
-    private List<String> list = null;
-    private ArrayAdapter mAdapter = null;
+    private ArrayList<String> list = null;
+    private ObservableRecyclerView.BaseRecyclerAdapter mAdapter = null;
 
     private Handler mHandler = new Handler(){
         @Override
@@ -25,7 +33,7 @@ public class Test2Fragment extends ObservableListFragment {
                     pullDownRefreshComplete();
                     break;
                 case 2:
-                    //setPullUpNetworkError(true, "糟糕，网络出错了！");
+                    setPullUpNetworkError(true, "糟糕，网络出错了！");
                     list.add("add");
                     list.add("add");
                     list.add("add");
@@ -41,12 +49,45 @@ public class Test2Fragment extends ObservableListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        setLayoutManager(new GridLayoutManager(this.getActivity(), 2));
         list = new ArrayList<String>();
         for(int i = 0; i < 50; i++){
             list.add("item" + i);
         }
-        mAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, list);
-        setListAdapter(mAdapter);
+        mAdapter = new LocalAdapter();
+        mAdapter.addDatas(list);
+        setRecyclerAdapter(mAdapter);
+        setOnItemClickListener(new ObservableRecyclerView.OnItemClickListener<String>(){
+
+            @Override
+            public void onItemClick(int position, String data) {
+                Toast.makeText(Test2Fragment.this.getActivity(), "" + data, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    class LocalAdapter extends ObservableRecyclerView.BaseRecyclerAdapter<String>{
+
+        @Override
+        public RecyclerView.ViewHolder onCreate(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item, null, false);
+            return new MyHolder(view);
+        }
+
+        @Override
+        public void onBind(RecyclerView.ViewHolder viewHolder, int RealPosition, String data) {
+            if(viewHolder instanceof MyHolder) {
+                ((MyHolder) viewHolder).text.setText(data);
+            }
+        }
+    }
+
+    class MyHolder extends ObservableRecyclerView.Holder {
+        TextView text;
+        public MyHolder(View itemView) {
+            super(itemView);
+            text = (TextView) itemView.findViewById(R.id.text1);
+        }
     }
 
     @Override

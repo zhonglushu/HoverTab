@@ -26,4 +26,13 @@
         android:text="TAB2"
         android:textColor="@drawable/tab_text_selector"/>
 
+    <TextView
+        android:id="@+id/tab3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="TAB3"
+        android:textColor="@drawable/tab_text_selector"/>
+
 </LinearLayout>

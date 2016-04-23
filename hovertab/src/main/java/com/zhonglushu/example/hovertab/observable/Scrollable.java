@@ -74,4 +74,7 @@ public interface Scrollable {
      * @param viewGroup ViewGroup object to dispatch motion events
      */
     void setTouchInterceptionViewGroup(ViewGroup viewGroup);
+
+    //是否下拉准备完毕，类似listview的isFirstItemVisible
+    boolean isReadyForPullStart();
 }

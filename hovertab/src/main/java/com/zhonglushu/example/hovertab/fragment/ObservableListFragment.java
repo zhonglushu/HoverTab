@@ -8,9 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import com.zhonglushu.example.hovertab.HoverTabActivity;
 import com.zhonglushu.example.hovertab.R;
+import com.zhonglushu.example.hovertab.Utils.Mode;
+import com.zhonglushu.example.hovertab.Utils.OnPullUpRefreshListener;
 import com.zhonglushu.example.hovertab.observable.ScrollUtils;
 import com.zhonglushu.example.hovertab.views.ObservableListView;
 
@@ -31,55 +34,59 @@ public abstract class ObservableListFragment extends ObservableBaseFragment<Obse
         View view = inflater.inflate(R.layout.com_zhonglushu_example_hovertab_listview, container, false);
 
         listView = (ObservableListView) view.findViewById(R.id.scroll);
-        listView.setmCurrentMode(ObservableListView.Mode.PULL_FROM_END);
-        listView.setmOnRefreshListener(new ObservableListView.OnRefreshListener() {
+        listView.setmCurrentMode(Mode.PULL_FROM_END);
+        listView.setmOnRefreshListener(new OnPullUpRefreshListener() {
 
             @Override
             public void onRefresh() {
                 pullUpRefresh();
             }
         });
-        // Set padding view for ListView. This is the flexible space.
-        /*View paddingView = new View(getActivity());
-        int flexibleSpaceImageHeight = getResources().getDimensionPixelSize(R.dimen.person_info_activity_flexible_space_height);
-        AbsListView.LayoutParams lp = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT,
-                flexibleSpaceImageHeight);
-        paddingView.setLayoutParams(lp);
-        // This is required to disable header's list selector effect
-        paddingView.setClickable(true);
-        listView.addHeaderView(paddingView);*/
         listView.setTouchInterceptionViewGroup((ViewGroup) getActivity().findViewById(R.id.com_zhonglushu_example_hovertab_custom));
 
         // Scroll to the specified offset after layout
         Bundle args = getArguments();
         if (args != null) {
-            boolean hasScroll = args.containsKey(ObservableBaseFragment.ARG_SCROLL_Y);
+            final boolean hasScroll = args.containsKey(ObservableBaseFragment.ARG_SCROLL_Y);
             final boolean hasHeaderHeight = args.containsKey(ObservableBaseFragment.ARG_HEADER_HEIGHT);
-            if(hasScroll || hasHeaderHeight){
-                final int scrollY = args.getInt(ObservableBaseFragment.ARG_SCROLL_Y, 0);
-                final int headerHeight = args.getInt(ObservableBaseFragment.ARG_HEADER_HEIGHT, 0);
-                ScrollUtils.addOnGlobalLayoutListener(listView, new Runnable() {
-                    @Override
-                    public void run() {
-                    /*int offset = scrollY % flexibleSpaceImageHeight;
-                    listView.setSelectionFromTop(0, -offset);*/
-                        if (hasHeaderHeight) {
-                            setHeaderView(headerHeight);
-                        }
+            int scrollY = 0;
+            int headerHeight = 0;
+            if(hasScroll) {
+                scrollY = args.getInt(ObservableBaseFragment.ARG_SCROLL_Y, 0);
+            }
+            if(hasHeaderHeight){
+                headerHeight = args.getInt(ObservableBaseFragment.ARG_HEADER_HEIGHT, 0);
+            }
+            final int finalHeaderHeight = headerHeight;
+            final int finalScrollY = scrollY;
+            ScrollUtils.addOnGlobalLayoutListener(listView, new Runnable() {
+                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public void run() {
+                    if (hasHeaderHeight) {
+                        setHeaderView(finalHeaderHeight);
                     }
-                });
-                if(hasScroll)
-                    updateFlexibleSpace(scrollY, view);
+                    if(hasScroll){
+                        setSelectionFromTop(finalScrollY, finalHeaderHeight);
+                    }else{
+                        int offset = finalScrollY % finalHeaderHeight;
+                        listView.setSelectionFromTop(0, -offset);
+                    }
+                }
+            });
+            if(hasScroll) {
+                updateFlexibleSpace(scrollY, view);
+            }else{
+                updateFlexibleSpace(0, view);
             }
         } else {
             updateFlexibleSpace(0, view);
         }
         listView.setScrollViewCallbacks(this);
-        updateFlexibleSpace(0, view);
+        //updateFlexibleSpace(0, view);
         return view;
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void setScrollY(int scrollY, int threshold) {
         View view = getView();
@@ -90,6 +97,11 @@ public abstract class ObservableListFragment extends ObservableBaseFragment<Obse
         if (listView == null) {
             return;
         }
+        setSelectionFromTop(scrollY, threshold);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setSelectionFromTop(int scrollY, int threshold){
         View firstVisibleChild = listView.getChildAt(0);
         if (firstVisibleChild != null) {
             int offset = scrollY;
@@ -148,5 +160,10 @@ public abstract class ObservableListFragment extends ObservableBaseFragment<Obse
         if(listView != null){
             listView.setNetworkError(isNetworkError, networkErrorStr);
         }
+    }
+
+    public void setCurrentMode(Mode mode){
+        if(listView != null)
+            listView.setmCurrentMode(mode);
     }
 }
