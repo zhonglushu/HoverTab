@@ -29,7 +29,7 @@ import com.zhonglushu.example.hovertab.observable.ScrollUtils;
  */
 public class CustomPullDownRefreshLinearLayout extends LinearLayout{
 
-    static final float FRICTION = 3.0f;
+    private static final float FRICTION = 4.0f;
     private HoverTabActivity activity = null;
     private boolean mIsBeingDragged = false;
     private float mLastMotionX, mLastMotionY;
@@ -46,6 +46,7 @@ public class CustomPullDownRefreshLinearLayout extends LinearLayout{
     private LinearLayout mHeaderLayout;
     private FrameLayout mHeaderContainer;
     private int mHeadHeight = 0;
+    private int mRefreshHeight = 0;
     private boolean mIntercept = false;
 
     public void setActivity(HoverTabActivity activity) {
@@ -366,15 +367,6 @@ public class CustomPullDownRefreshLinearLayout extends LinearLayout{
         scrollTo(0, value);
     }
 
-    /**
-     * Updates the View State when the mode has been set. This does not do any
-     * checking that the mode is different to current state so always updates.
-     */
-    protected void updateUIForMode() {
-        // Hide Loading Views
-        refreshLoadingViewsSize();
-    }
-
     @Override
     protected final void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -493,10 +485,22 @@ public class CustomPullDownRefreshLinearLayout extends LinearLayout{
                     callRefreshListener();
                 }
             };
-            smoothScrollTo(-getRefreshFooterHeight(), listener);
+            if(mState == State.MANUAL_REFRESHING){
+                smoothScrollTo(-mRefreshHeight, listener);
+            }else{
+                smoothScrollTo(-getRefreshFooterHeight(), listener);
+            }
+
         } else {
             // We're not scrolling, so just call Refresh Listener now
             callRefreshListener();
+        }
+    }
+
+    public final void setManualRefreshing() {
+        if (!isRefreshing()) {
+            mRefreshHeight = measureViewHeight(new ObservableRefreshView(getContext()));
+            setState(State.MANUAL_REFRESHING, true);
         }
     }
 

@@ -1,5 +1,7 @@
 package com.zhonglushu.example.hovertab;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -24,10 +26,8 @@ public abstract class HoverTabActivity extends AppCompatActivity{
     private CustomPullDownRefreshLinearLayout customPullDownRefreshLinearLayout = null;
     private HoverTabFragmentStatePagerAdapter mPagerAdapter;
     private ViewPager mPager;
-    private ViewPager.OnPageChangeListener mOnPageChangeListener= null;
 
     public void setOnPageChangeListener(ViewPager.OnPageChangeListener mOnPageChangeListener) {
-        this.mOnPageChangeListener = mOnPageChangeListener;
         if(mPager != null)
             mPager.setOnPageChangeListener(mOnPageChangeListener);
     }
@@ -42,6 +42,9 @@ public abstract class HoverTabActivity extends AppCompatActivity{
 
             @Override
             public void onRefresh() {
+                //update the header by need
+                onRefreshHeader();
+
                 ObservableBaseFragment fragment =
                         (ObservableBaseFragment) mPagerAdapter.getItemAt(mPager.getCurrentItem());
                 if (fragment == null) {
@@ -76,6 +79,21 @@ public abstract class HoverTabActivity extends AppCompatActivity{
         if(mPager != null){
             mPager.setCurrentItem(item);
         }
+    }
+
+    public void setManualRefreshing() {
+        if(customPullDownRefreshLinearLayout != null){
+            ScrollUtils.addOnGlobalLayoutListener(this.findViewById(android.R.id.content), new Runnable() {
+                @Override
+                public void run() {
+                    customPullDownRefreshLinearLayout.setManualRefreshing();
+                }
+            });
+        }
+    }
+
+    public void onRefreshHeader(){
+
     }
 
     public boolean isReadyForPullStart(){

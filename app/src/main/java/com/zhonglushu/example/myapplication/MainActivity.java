@@ -3,9 +3,13 @@ package com.zhonglushu.example.myapplication;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 
 import com.zhonglushu.example.hovertab.HoverTabActivity;
 import com.zhonglushu.example.hovertab.fragment.ObservableBaseFragment;
@@ -21,6 +25,14 @@ public class MainActivity extends HoverTabActivity {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        //headerview
+        View adView = inflater.inflate(R.layout.header_layout, null);
+        ViewPager viewPager = (ViewPager) adView.findViewById(R.id.header_pager);
+        AdPagerAdapter pagerAdapter = new AdPagerAdapter();
+        viewPager.setAdapter(pagerAdapter);
+        setHoverHeaderView(adView);
+
+        //tabview
         View tabview = inflater.inflate(R.layout.tab_layout, null);
         tab1 = tabview.findViewById(R.id.tab1);
         tab2 = tabview.findViewById(R.id.tab2);
@@ -31,11 +43,9 @@ public class MainActivity extends HoverTabActivity {
         tab1.setSelected(true);
         setHoverTabView(tabview);
 
+        //viewpager adapter
         setmPagerAdapter(new LocalPagerAdapter(this.getSupportFragmentManager()));
 
-        //header必须要在pageradapter设置之后，跟实现原理有关系
-        View view = inflater.inflate(R.layout.header_layout, null);
-        setHoverHeaderView(view);
         setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -44,16 +54,15 @@ public class MainActivity extends HoverTabActivity {
 
             @Override
             public void onPageSelected(int position) {
-                if(position == 0){
+                if (position == 0) {
                     tab1.setSelected(true);
                     tab2.setSelected(false);
                     tab3.setSelected(false);
-                }else if(position == 1){
+                } else if (position == 1) {
                     tab1.setSelected(false);
                     tab2.setSelected(true);
                     tab3.setSelected(false);
-                }
-                else if(position == 2){
+                } else if (position == 2) {
                     tab1.setSelected(false);
                     tab2.setSelected(false);
                     tab3.setSelected(true);
@@ -65,6 +74,14 @@ public class MainActivity extends HoverTabActivity {
 
             }
         });
+
+        //auto refresh
+        setManualRefreshing();
+    }
+
+    @Override
+    public void onRefreshHeader() {
+        super.onRefreshHeader();
     }
 
     private View.OnClickListener mListener = new View.OnClickListener(){
@@ -107,6 +124,23 @@ public class MainActivity extends HoverTabActivity {
                 f = new Test2Fragment();
             }
             return f;
+        }
+    }
+
+    public class AdPagerAdapter extends AbstractViewPagerAdapter {
+
+        @Override
+        public View newView(int position) {
+            ImageView imageView = new ImageView(MainActivity.this);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setImageResource(R.drawable.ad);
+            imageView.setTag(position);
+            return imageView;
+        }
+
+        @Override
+        public int getCount() {
+            return 4;
         }
     }
 }
