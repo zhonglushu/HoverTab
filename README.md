@@ -1,7 +1,13 @@
 # HoverTab
 悬浮的标题栏，并支持上拉、下拉刷新，结合PullToRefresh和Android-ObservableScrollView开源项目
 
-    运行效果如下，可以是listview或者recyclerview, 头部图片部分是可以滚动的viewpager：
+Gradle可以通过以下方式引用：
+```Java
+   dependencies {
+       compile 'com.zhonglushu.example:hovertab:1.0'
+   }
+```
+    运行效果如下，可以是listview或者recyclerview, 头部图片部分是可以滚动的viewpager：
 ![](https://github.com/zhonglushu/HoverTab/raw/master/effect_picture1.png)
 
 activity中的代码主要是设置一些header、adapter
